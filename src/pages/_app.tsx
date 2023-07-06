@@ -37,7 +37,7 @@ export default function App({
   const { draftMode, token } = pageProps
   return (
     <>
-      <style jsx global>
+      <style>
         {`
           :root {
             --font-family-sans: ${sans.style.fontFamily};
