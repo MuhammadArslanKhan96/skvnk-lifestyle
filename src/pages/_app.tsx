@@ -37,15 +37,6 @@ export default function App({
   const { draftMode, token } = pageProps
   return (
     <>
-      <style>
-        {`
-          :root {
-            --font-family-sans: ${sans.style.fontFamily};
-            --font-family-serif: ${serif.style.fontFamily};
-            --font-family-mono: ${mono.style.fontFamily};
-          }
-        `}
-      </style>
       {draftMode ? (
         <PreviewProvider token={token}>
           <Component {...pageProps} />

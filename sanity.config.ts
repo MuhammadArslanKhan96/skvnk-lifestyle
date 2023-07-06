@@ -16,6 +16,8 @@ import {
 import { schema } from '~/schemas'
 import { productionUrl } from '~/utils/productionUrl'
 
+import {Logo} from './src/components/logo'
+
 export default defineConfig({
   basePath: '/admin',
   name: 'skvnk-lifestyle-studio',
@@ -31,4 +33,9 @@ export default defineConfig({
     visionTool({ defaultApiVersion: apiVersion }),
     productionUrl({ previewSecretId, types: ['post'], apiVersion }),
   ],
+  studio: {
+    components: {
+      logo: Logo,
+    }
+  }
 })
