@@ -17,9 +17,9 @@ import { schema } from '~/schemas'
 import { productionUrl } from '~/utils/productionUrl'
 
 export default defineConfig({
-  basePath: '/studio',
-  name: 'project-name',
-  title: 'Project Name',
+  basePath: '/admin',
+  name: 'Skvnk Lifestyle Studio',
+  title: 'Skvnk Lifestyle Studio',
   projectId,
   dataset,
   //edit schemas in './src/schemas'
