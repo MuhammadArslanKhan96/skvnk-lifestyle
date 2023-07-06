@@ -9,6 +9,9 @@ import { getClient } from '~/lib/sanity.client'
 import { getPosts, type Post, postsQuery } from '~/lib/sanity.queries'
 import type { SharedPageProps } from '~/pages/_app'
 
+import { authProtected } from '@/components/authProtected'
+
+
 export const getStaticProps: GetStaticProps<SharedPageProps & {posts: Post[]}> = async ({ draftMode = false }) => {
   const client = getClient(draftMode ? { token: readToken } : undefined)
   const posts = await getPosts(client)
@@ -22,9 +25,8 @@ export const getStaticProps: GetStaticProps<SharedPageProps & {posts: Post[]}> =
   }
 }
 
-export default function IndexPage(
-  props: InferGetStaticPropsType<typeof getStaticProps>
-) {
+
+function IndexPage( props: InferGetStaticPropsType<typeof getStaticProps>) {
   const [posts] = useLiveQuery<Post[]>(props.posts, postsQuery)
   return (
     <Container>
@@ -38,3 +40,6 @@ export default function IndexPage(
     </Container>
   )
 }
+
+
+export default authProtected(IndexPage)
