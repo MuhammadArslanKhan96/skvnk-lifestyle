@@ -9,8 +9,6 @@ import { getClient } from '~/lib/sanity.client'
 import { getPosts, type Post, postsQuery } from '~/lib/sanity.queries'
 import type { SharedPageProps } from '~/pages/_app'
 
-import { authProtected } from '@/components/authProtected'
-
 
 export const getStaticProps: GetStaticProps<SharedPageProps & {posts: Post[]}> = async ({ draftMode = false }) => {
   const client = getClient(draftMode ? { token: readToken } : undefined)
@@ -42,4 +40,4 @@ function IndexPage( props: InferGetStaticPropsType<typeof getStaticProps>) {
 }
 
 
-export default authProtected(IndexPage)
+export default IndexPage
