@@ -9,16 +9,13 @@ import { getClient } from '~/lib/sanity.client'
 import { getPosts, type Post, postsQuery } from '~/lib/sanity.queries'
 import type { SharedPageProps } from '~/pages/_app'
 
-export const getStaticProps: GetStaticProps<
-  SharedPageProps & {
-    posts: Post[]
-  }
-> = async ({ draftMode = false }) => {
+export const getStaticProps: GetStaticProps<SharedPageProps & {posts: Post[]}> = async ({ draftMode = false }) => {
   const client = getClient(draftMode ? { token: readToken } : undefined)
   const posts = await getPosts(client)
 
   return {
     props: {
+      nhostSession: null,
       draftMode,
       token: draftMode ? readToken : '',
       posts,
