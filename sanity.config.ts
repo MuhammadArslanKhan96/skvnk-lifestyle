@@ -18,7 +18,7 @@ import { productionUrl } from '~/utils/productionUrl'
 
 export default defineConfig({
   basePath: '/admin',
-  name: 'Skvnk Lifestyle Studio',
+  name: 'skvnk-lifestyle-studio',
   title: 'Skvnk Lifestyle Studio',
   projectId,
   dataset,
