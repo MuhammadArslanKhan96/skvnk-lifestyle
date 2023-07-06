@@ -15,7 +15,6 @@ export const getStaticProps: GetStaticProps<SharedPageProps & {posts: Post[]}> =
 
   return {
     props: {
-      nhostSession: null,
       draftMode,
       token: draftMode ? readToken : '',
       posts,

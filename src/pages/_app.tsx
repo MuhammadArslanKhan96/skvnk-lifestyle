@@ -10,7 +10,6 @@ const nhost = new NhostClient({
 });
 
 export interface SharedPageProps {
-  nhostSession: NhostSession;
   draftMode: boolean
   token: string
 }
@@ -22,7 +21,7 @@ const PreviewProvider = lazy(() => import('~/components/PreviewProvider'))
 export default function App({ Component, pageProps, }: AppProps<SharedPageProps>) {
   const { draftMode, token } = pageProps
   return (
-    <NhostProvider nhost={nhost} initial={pageProps.nhostSession}>
+    <NhostProvider nhost={nhost}>
       {draftMode ? (
         <PreviewProvider token={token}>
           <Component {...pageProps} />
