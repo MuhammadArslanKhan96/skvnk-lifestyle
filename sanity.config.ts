@@ -17,7 +17,7 @@ import { schema } from '~/schemas'
 import { productionUrl } from '~/utils/productionUrl'
 
 export default defineConfig({
-  basePath: '/admin',
+  basePath: '/studio',
   name: 'Skvnk Lifestyle Studio',
   title: 'Skvnk Lifestyle Studio',
   projectId,
