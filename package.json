@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@next/font": "^13.4.7",
+    "@nhost/nextjs": "^1.13.33",
     "@portabletext/react": "3.0.4",
     "@sanity/client": "6.1.5",
     "@sanity/demo": "^1.0.2",
@@ -22,6 +23,7 @@
     "@stripe/react-stripe-js": "^2.1.1",
     "@tailwindcss/typography": "^0.5.8",
     "easymde": "^2.18.0",
+    "graphql": "^16.7.1",
     "next": "13.4.7",
     "next-sanity": "^5.1.0",
     "react": "^18.2.0",
