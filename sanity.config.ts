@@ -5,6 +5,8 @@
 import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
+import { media } from 'sanity-plugin-media'
+
 
 // see https://www.sanity.io/docs/api-versioning for how versioning works
 import {
@@ -32,6 +34,7 @@ export default defineConfig({
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
     productionUrl({ previewSecretId, types: ['post'], apiVersion }),
+    media(),
   ],
   studio: {
     components: {
