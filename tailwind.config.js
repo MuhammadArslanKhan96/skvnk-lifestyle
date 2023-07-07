@@ -2,7 +2,12 @@
 module.exports = {
   content: ["./src/**/*.{html,js,tsx,jsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        brandGreen: '#00dc02',
+      },
+    },
+    
   },
   plugins: [
     'tailwindcss',
