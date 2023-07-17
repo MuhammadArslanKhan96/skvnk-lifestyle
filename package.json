@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.15",
+    "@heroicons/react": "^2.0.18",
     "@next/font": "^13.4.7",
     "@nhost/nextjs": "^1.13.33",
     "@portabletext/react": "3.0.4",
