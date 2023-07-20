@@ -98,8 +98,6 @@ export default function Footer() {
 
                                 <div className='space-y-4'>
 
-                                    <h2 className='text-white text-center text-xs'>or Login with email</h2>
-
                                     <input type="text" placeholder="Enter your email"
                                         className="w-full h-12 rounded pl-4 text-white border border-white bg-transparent placeholder:text-white" />
 
