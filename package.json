@@ -10,6 +10,8 @@
   },
   "browserslist": "defaults, not ie <= 11",
   "dependencies": {
+    "@headlessui/react": "^1.7.16",
+    "@heroicons/react": "^2.0.18",
     "@tailwindcss/line-clamp": "^0.4.0",
     "@tailwindcss/typography": "^0.5.4",
     "autoprefixer": "^10.4.8",

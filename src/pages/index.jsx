@@ -1,133 +1,52 @@
-import { useMemo } from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
-import { parse } from 'rss-to-json'
 
-import { useAudioPlayer } from '@/components/AudioProvider'
-import { Container } from '@/components/Container'
-import { FormattedDate } from '@/components/FormattedDate'
+import { Author } from '@/components/Author'
+import { Footer } from '@/components/Footer'
+import { FreeChapters } from '@/components/FreeChapters'
+import { Hero } from '@/components/Hero'
+import { Introduction } from '@/components/Introduction'
+import { NavBar } from '@/components/NavBar'
+import { Pricing } from '@/components/Pricing'
+import { Resources } from '@/components/Resources'
+import { Screencasts } from '@/components/Screencasts'
+import { TableOfContents } from '@/components/TableOfContents'
+import { Testimonial } from '@/components/Testimonial'
+import { Testimonials } from '@/components/Testimonials'
+import avatarImage1 from '@/images/avatars/avatar-1.png'
+import avatarImage2 from '@/images/avatars/avatar-2.png'
 
-
-
-
-function PlayPauseIcon({ playing, ...props }) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 10 10" fill="none" {...props}>
-      {playing ? (
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M1.496 0a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5H2.68a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5H1.496Zm5.82 0a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5H8.5a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5H7.316Z"
-        />
-      ) : (
-        <path d="M8.25 4.567a.5.5 0 0 1 0 .866l-7.5 4.33A.5.5 0 0 1 0 9.33V.67A.5.5 0 0 1 .75.237l7.5 4.33Z" />
-      )}
-    </svg>
-  )
-}
-
-function EpisodeEntry({ episode }) {
-  let date = new Date(episode.published)
-
-  let audioPlayerData = useMemo(
-    () => ({
-      title: episode.title,
-      audio: {
-        src: episode.audio.src,
-        type: episode.audio.type,
-      },
-      link: `/${episode.id}`,
-    }),
-    [episode]
-  )
-  let player = useAudioPlayer(audioPlayerData)
-
- 
-
-  return (
-    <article
-      aria-labelledby={`episode-${episode.id}-title`}
-      className="py-10 sm:py-12"
-    >
-      <Container>
-        <div className="flex flex-col items-start">
-          <h2
-            id={`episode-${episode.id}-title`}
-            className="mt-2 text-lg font-bold text-slate-900"
-          >
-            <Link href={`/${episode.id}`}>{episode.title}</Link>
-          </h2>
-
-          <FormattedDate
-            date={date}
-            className="order-first font-mono text-sm leading-7 text-slate-500"
-          />
-          <p className="mt-1 text-base leading-7 text-slate-700">
-            {episode.description}
-          </p>
-
-          <div className="mt-4 flex items-center gap-4">
-            <Link
-              href={`/${episode.id}`}
-              className="flex items-center text-sm font-bold leading-6 text-altGreen hover:text-brandGreen active:text-brandGreen"
-              aria-label={`Show notes for episode ${episode.title}`}
-            >
-              Watch Episode: #{episode.title}
-            </Link>
-          </div>
-        </div>
-      </Container>
-    </article>
-  )
-}
-
-export default function Home({ episodes }) {
+export default function Home() {
   return (
     <>
       <Head>
         <title>
-          #SKVNKNATION - Conversations with the most tragically misunderstood
-          people of our time
+          Everything Starts as a Square - Get lost in the world of icon design
         </title>
         <meta
           name="description"
-          content="Conversations with the most tragically misunderstood people of our time."
+          content="A book and video course that teaches you how to design your own icons from scratch. "
         />
       </Head>
-      <div className="pt-16 pb-12 sm:pb-4 lg:pt-12">
-        <Container>
-          <h1 className="text-3xl font-bold leading-7 text-slate-900">
-            Episodes
-          </h1>
-        </Container>
-        <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100">
-          {episodes.map((episode) => (
-            <EpisodeEntry key={episode.id} episode={episode} />
-          ))}
-        </div>
-      </div>
+      <Hero />
+      <NavBar />
+      <Testimonial
+        id="testimonial"
+        author={{
+          name: 'Tommy Stroman',
+          role: 'Front-end developer',
+          image: avatarImage1,
+        }}
+      >
+        <p>
+          “I didn’t know a thing about icon design until I read this book. Now I
+          can create any icon I need in no time. Great resource!”
+        </p>
+      </Testimonial>
+      <Resources />
+      <FreeChapters />
+
+      <Testimonials />
+      <Footer />
     </>
   )
-}
-
-export async function getStaticProps() {
-  let feed = await parse('https://their-side-feed.vercel.app/api/feed')
-
-  return {
-    props: {
-      episodes: feed.items.map(
-        ({ id, title, description, enclosures, published }) => ({
-          id,
-          title: `${id}: ${title}`,
-          published,
-          description,
-          audio: enclosures.map((enclosure) => ({
-            src: enclosure.url,
-            type: enclosure.type,
-          }))[0],
-        })
-      ),
-    },
-    revalidate: 10,
-  }
 }
