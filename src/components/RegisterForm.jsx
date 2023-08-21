@@ -111,7 +111,7 @@ function RegisterForm() {
   const disableForm = isLoading || needsEmailVerification
   return (
     <div className="flex justify-center">
-      <div className="bg-white p-6  lg:min-w-[300px]">
+      <div className="bg-white p-6  lg:min-w-[350px]">
         <p className="text-sm font-bold">
           {needsEmailVerification ? 'VERIFY ACCOUNT' : 'CREATE ACCOUNT'}
         </p>
