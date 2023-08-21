@@ -12,10 +12,19 @@ function NewDashboard() {
         <Navbar />
       </div>
       <div className="flex flex-col items-center justify-center px-4 py-10 pb-14">
-        <h1 className="mb-4 font-roadrage text-3xl font-[800] uppercase">
+        <h1 className="mb-4 text-center font-roadrage text-3xl font-[800] uppercase">
           What is the skvnklifestyle membership all about?
         </h1>
-        <Image src={lifestyleImage} alt="" width={650} height={350} />
+        <iframe
+          width={650}
+          height={350}
+          src="https://www.youtube.com/embed/3edyyAsA3s4"
+          title="YouTube video player"
+          frameborder="0"
+          className="w-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
       </div>
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-10 bg-ready bg-cover px-4 py-24">
         <h1 className="text-center font-roadrage text-[4rem] font-[800] uppercase">
