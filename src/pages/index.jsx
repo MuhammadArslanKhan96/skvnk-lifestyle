@@ -1,9 +1,7 @@
-import React from 'react'
-import NewFooter from '@/components/NewFooter'
-import lifestyleImage from '@/images/lifestyle.png'
 import Navbar from '@/components/Home/Navbar'
-import Image from 'next/image'
+import NewFooter from '@/components/NewFooter'
 import Link from 'next/link'
+import ReactPlayer from 'react-player'
 
 function NewDashboard() {
   return (
@@ -15,16 +13,11 @@ function NewDashboard() {
         <h1 className="mb-4 text-center font-roadrage text-3xl font-[800] uppercase">
           What is the skvnklifestyle membership all about?
         </h1>
-        <iframe
-          width={650}
-          height={350}
-          src="https://www.youtube.com/embed/3edyyAsA3s4"
-          title="YouTube video player"
-          frameborder="0"
-          className="w-full"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-        ></iframe>
+          <ReactPlayer
+            url="https://vimeo.com/856416433/8744871dbe?share=copy"
+            controls
+            className="max-w-[80vw]"
+          />
       </div>
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-10 bg-ready bg-cover px-4 py-24">
         <h1 className="text-center font-roadrage text-[4rem] font-[800] uppercase">

@@ -7,6 +7,9 @@ import { useAudioPlayer } from '@/components/AudioProvider'
 import { Container } from '@/components/Container'
 import { FormattedDate } from '@/components/FormattedDate'
 import { Layout } from '@/components/Layout'
+import { useUserContext } from '@/components/UserProvider'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 function PlayPauseIcon({ playing, ...props }) {
   return (
@@ -80,6 +83,14 @@ function EpisodeEntry({ episode }) {
 }
 
 export default function Home({ episodes }) {
+  const { user } = useUserContext()
+  const router = useRouter()
+  useEffect(() => {
+    if (!user || user.metadata.plan === null) {
+      router.push('/pricing')
+    }
+  }, [])
+
   return (
     <>
       <Head>

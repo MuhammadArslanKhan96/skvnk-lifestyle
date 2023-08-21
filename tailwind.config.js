@@ -9,6 +9,7 @@ module.exports = {
         brandGreen: '#00dc02',
         altGreen: '#1DB954',
         lime: '#7fbd2f',
+        limehover: '#6ea329',
       },
       fontFamily: {
         sans: ['Satoshi', ...defaultTheme.fontFamily.sans],

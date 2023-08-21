@@ -63,7 +63,7 @@ function LoginForm() {
                 disabled={disableForm}
                 onChange={removeErrors}
                 name="email"
-                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2"
+                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2 outline-none"
                 placeholder="Email"
               />
               <LiaIdCardSolid
@@ -78,7 +78,7 @@ function LoginForm() {
                 type={showPasswords.pass ? 'text' : 'password'}
                 name="password"
                 disabled={disableForm}
-                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2"
+                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2 outline-none"
                 placeholder="Password"
               />
               <div
@@ -97,7 +97,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={disableForm}
-              className="rounded-full bg-lime py-2 text-sm font-bold"
+              className="rounded-full bg-lime hover:bg-limehover py-2 text-sm font-bold"
             >
               {isLoading ? 'Signing in...' : 'Sign in'}
             </button>

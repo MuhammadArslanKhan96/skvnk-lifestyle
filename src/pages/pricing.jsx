@@ -77,12 +77,12 @@ function Pricing() {
 
   return (
     <div>
-      <div className={'relative max-h-[60vh] bg-pricing bg-cover'}>
+      <div className={'relative min-h-[80vh] bg-pricing bg-cover'}>
         <Navbar />
         <h1 className="font-roadrage text-center mb-16 text-3xl font-bold uppercase text-yellow-400 md:text-[3rem]">
           Pick Your Poizn.
         </h1>
-        <div className="flex justify-center">
+        <div className="flex flex-wrap md:absolute -bottom-10 left-0 w-full z-20 justify-center">
           <div className="h-fit w-full max-w-[16rem] rounded-2xl bg-white p-10 shadow-md">
             <div className="flex items-center text-gray-700">
               <h2 className="text-3xl font-[900]">$10</h2>
@@ -113,7 +113,7 @@ function Pricing() {
               Join NOW
             </div>
           </div>
-          <div className="relative z-10 -mx-4 -mt-4 h-[370px] w-full max-w-[18rem] rounded-2xl bg-blue-600 px-8 py-10 pr-10 shadow-md">
+          <div className="relative z-10 -mx-4 -mt-4 h-[370px] sm:h-fit w-full max-w-[18rem] rounded-2xl bg-blue-600 px-8 py-10 pr-10 shadow-md">
             <div className="flex items-center text-yellow-500">
               <h2 className="text-3xl font-[900]">$54</h2>
               <h2 className="-mb-2 text-xl font-[900]">USD</h2>
@@ -132,7 +132,7 @@ function Pricing() {
             </ul>
             <div
               onClick={() => handlePlanPurchase('semi-annual')}
-              className="mt-7 cursor-pointer rounded-full bg-black py-2 text-center text-sm font-bold uppercase text-white"
+              className="mt-7 cursor-pointer rounded-full sm:mb-14 bg-black py-2 text-center text-sm font-bold uppercase text-white"
             >
               Join NOW
             </div>
@@ -160,7 +160,7 @@ function Pricing() {
           </div>
         </div>
       </div>
-      <div className="h-[20.5vh] w-full bg-white"></div>
+      <div className="h-[20.5vh] -mt-4 relative z-10 w-full bg-white"></div>
       {updatingProfile && (
         <div className="absolute top-0 left-0 z-20 flex h-screen w-[98.6vw] items-center justify-center bg-black/70 font-bold text-white">
           Loading...

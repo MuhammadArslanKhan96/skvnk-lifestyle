@@ -1,6 +1,7 @@
 import { CountryList } from '@/countryList'
 import useOutside from '@/hooks/useOutside'
 import { useSignUpEmailPassword } from '@nhost/nextjs'
+import { parsePhoneNumber } from 'libphonenumber-js'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -9,7 +10,9 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { LiaIdCardSolid } from 'react-icons/lia'
 
 function RegisterForm() {
-  const [country, setCountry] = useState('AF')
+  const [country, setCountry] = useState('JM')
+  const [filter, setFilter] = useState('')
+  const [phone, setPhone] = useState('')
   const [top, setTop] = useState(false)
   const [showSelect, setShowSelect] = useState(false)
   const [showPasswords, setShowPasswords] = React.useState({
@@ -22,7 +25,7 @@ function RegisterForm() {
     minLength: null,
   })
   const ref = React.useRef()
-  useOutside(ref,setShowSelect)
+  useOutside(ref, setShowSelect)
   const router = useRouter()
 
   const {
@@ -76,6 +79,31 @@ function RegisterForm() {
       },
     })
   }
+
+  const formatPhoneNumber = (event) => {
+    try {
+      setErrors('')
+      const phoneNumber = parsePhoneNumber(
+        countries.filter((i) => i.code === country)[0].dial_code +
+          event.target.value
+      )
+      const number = phoneNumber.formatInternational();
+        setPhone(
+          number.slice(
+            countries.filter((i) => i.code === country)[0].dial_code.length + 1,
+            phoneNumber.formatInternational().length
+          )
+        )
+    } catch (error) {
+      if(error.message === 'TOO_SHORT'){
+        setPhone(event.target.value)
+      }
+      if(error.message === 'TOO_LONG') {
+        setErrors('Invalid Number')
+      }
+    }
+  }
+
   if (isSuccess) {
     router.push('/')
     return null
@@ -110,6 +138,15 @@ function RegisterForm() {
     })
   }, [])
 
+  let filteredCountries = filter
+    ? countries.filter(
+        (i) =>
+          i.code.toLowerCase().includes(filter.toLowerCase()) ||
+          i.name.toLowerCase().includes(filter.toLowerCase()) ||
+          i.dial_code.toLowerCase().includes(filter.toLowerCase())
+      )
+    : countries
+
   const disableForm = isLoading || needsEmailVerification
   return (
     <div className="flex justify-center">
@@ -129,7 +166,7 @@ function RegisterForm() {
                 type="email"
                 disabled={disableForm}
                 name="email"
-                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2"
+                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2 outline-none"
                 placeholder="Email"
               />
               <LiaIdCardSolid
@@ -142,14 +179,14 @@ function RegisterForm() {
               <input
                 type="email"
                 name="confirm_email"
-                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2"
+                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2 outline-none"
                 placeholder="Confirm Email"
                 disabled={disableForm}
               />
             </div>
             <div className="relative flex w-full items-center border border-gray-200 bg-gray-100">
               <div
-                className="relative flex h-full min-w-[50px] cursor-pointer items-center gap-2 p-1"
+                className="relative flex h-full min-w-[90px] cursor-pointer items-center gap-2 p-1"
                 onClick={() => setShowSelect(!showSelect)}
               >
                 <Image
@@ -161,19 +198,31 @@ function RegisterForm() {
                 <p>
                   {countries.filter((i) => i.code === country)[0].dial_code}
                 </p>
+              </div>
+              <div>
                 {showSelect && (
                   <div
                     ref={ref}
                     className={
-                      'absolute z-30 left-0 max-h-[25rem] overflow-y-scroll ' +
+                      'absolute left-0 z-30 max-h-[25rem] overflow-y-scroll ' +
                       (top ? 'bottom-9' : 'top-9')
                     }
                   >
-                    {countries.map((i, idx) => (
+                    <input
+                      type="text"
+                      value={filter}
+                      onChange={(e) => setFilter(e.target.value)}
+                      placeholder={'Search'}
+                      className="px-4 py-2 "
+                    />
+                    {filteredCountries.map((i, idx) => (
                       <div
-                        onClick={() => setCountry(i.code)}
+                        onClick={() => {
+                          setCountry(i.code)
+                          setShowSelect(!showSelect)
+                        }}
                         key={idx}
-                        className="flex w-full min-w-[130px] items-center gap-2 bg-gray-200 px-4 py-2 text-xs text-gray-500"
+                        className="flex w-full min-w-[130px] cursor-pointer items-center gap-2 bg-gray-200 px-4 py-2 text-xs text-gray-500"
                       >
                         <Image
                           src={i.image}
@@ -191,8 +240,10 @@ function RegisterForm() {
               <input
                 type="text"
                 name="phone"
-                className="w-full rounded  bg-transparent px-4 py-2"
+                className="w-full rounded bg-transparent  py-2 pr-4 outline-none"
                 disabled={disableForm}
+                value={phone}
+                onChange={formatPhoneNumber}
                 placeholder="Phone Number"
               />
             </div>
@@ -215,7 +266,7 @@ function RegisterForm() {
                 name="password"
                 disabled={disableForm}
                 onChange={validatePassword}
-                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2"
+                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2 outline-none"
                 placeholder="Password"
               />
               <div
@@ -236,7 +287,7 @@ function RegisterForm() {
                 type={showPasswords.confirm_pass ? 'text' : 'password'}
                 disabled={disableForm}
                 name="confirm_password"
-                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2"
+                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2 outline-none"
                 placeholder="Confirm Password"
               />
               <div
@@ -302,7 +353,7 @@ function RegisterForm() {
             <button
               type="submit"
               disabled={disableForm}
-              className="rounded-full bg-lime py-2 text-sm font-bold"
+              className="rounded-full bg-lime py-2 text-sm font-bold hover:bg-limehover"
             >
               {isLoading ? 'Creating Account...' : 'Create My Account'}
             </button>
