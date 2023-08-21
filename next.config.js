@@ -9,7 +9,7 @@ const nextConfig = {
         hostname: 'gcdnb.pbrd.co',
       },
       {
-        protocol: 'http',
+        protocol: 'https',
         hostname: 'purecatamphetamine.github.io',
       },
     ],

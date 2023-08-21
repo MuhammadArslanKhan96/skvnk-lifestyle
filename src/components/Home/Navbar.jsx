@@ -10,11 +10,11 @@ const Navbar = () => {
   const { signOut } = useSignOut()
 
   return (
-    <div className="flex items-center justify-between px-4">
+    <div className="flex items-center flex-col md:flex-row justify-between px-4">
       <Link href="/">
         <Image src={brandLogo} alt="" width={300} height={100} />
       </Link>
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap justify-center items-center gap-4">
         <Link
           href={user ? '/pricing' : '/register'}
           className="rounded-full uppercase bg-lime px-4 py-2 font-roadrage font-bold"

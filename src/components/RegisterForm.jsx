@@ -1,4 +1,5 @@
 import { CountryList } from '@/countryList'
+import useOutside from '@/hooks/useOutside'
 import { useSignUpEmailPassword } from '@nhost/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -20,7 +21,8 @@ function RegisterForm() {
     validation: null,
     minLength: null,
   })
-
+  const ref = React.useRef()
+  useOutside(ref,setShowSelect)
   const router = useRouter()
 
   const {
@@ -95,7 +97,7 @@ function RegisterForm() {
 
   let countries = CountryList.map((i) => ({
     ...i,
-    image: `http://purecatamphetamine.github.io/country-flag-icons/3x2/${i.code}.svg`,
+    image: `https://purecatamphetamine.github.io/country-flag-icons/3x2/${i.code}.svg`,
   }))
 
   React.useEffect(() => {
@@ -147,7 +149,7 @@ function RegisterForm() {
             </div>
             <div className="relative flex w-full items-center border border-gray-200 bg-gray-100">
               <div
-                className="relative flex h-full items-center min-w-[50px] cursor-pointer gap-2 p-1"
+                className="relative flex h-full min-w-[50px] cursor-pointer items-center gap-2 p-1"
                 onClick={() => setShowSelect(!showSelect)}
               >
                 <Image
@@ -161,9 +163,10 @@ function RegisterForm() {
                 </p>
                 {showSelect && (
                   <div
+                    ref={ref}
                     className={
-                      'absolute z-30 max-h-[25rem] overflow-y-scroll ' +
-                      (top ? 'bottom-10' : 'top-10')
+                      'absolute z-30 left-0 max-h-[25rem] overflow-y-scroll ' +
+                      (top ? 'bottom-9' : 'top-9')
                     }
                   >
                     {countries.map((i, idx) => (
