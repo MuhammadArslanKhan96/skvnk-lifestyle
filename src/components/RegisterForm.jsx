@@ -1,11 +1,16 @@
-import React from 'react'
-import { LiaIdCardSolid } from 'react-icons/lia'
-import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
-import Link from 'next/link'
+import { CountryList } from '@/countryList'
 import { useSignUpEmailPassword } from '@nhost/nextjs'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import React, { useState } from 'react'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import { LiaIdCardSolid } from 'react-icons/lia'
 
 function RegisterForm() {
+  const [country, setCountry] = useState('AF')
+  const [top, setTop] = useState(false)
+  const [showSelect, setShowSelect] = useState(false)
   const [showPasswords, setShowPasswords] = React.useState({
     pass: false,
     confirm_pass: false,
@@ -60,7 +65,9 @@ function RegisterForm() {
 
     await signUpEmailPassword(email, password, {
       metadata: {
-        phone,
+        phone: `${
+          countries.filter((i) => i.code === country)[0].dial_code
+        }${phone}`,
         keep_updated,
         plan: null,
         isPurchasing: false,
@@ -85,6 +92,22 @@ function RegisterForm() {
       setPasswordErrors((pre) => ({ ...pre, validation: true }))
     }
   }
+
+  let countries = CountryList.map((i) => ({
+    ...i,
+    image: `http://purecatamphetamine.github.io/country-flag-icons/3x2/${i.code}.svg`,
+  }))
+
+  React.useEffect(() => {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY >= 180) {
+        setTop(false)
+      } else {
+        setTop(true)
+      }
+    })
+  }, [])
+
   const disableForm = isLoading || needsEmailVerification
   return (
     <div className="flex justify-center">
@@ -122,13 +145,52 @@ function RegisterForm() {
                 disabled={disableForm}
               />
             </div>
-            <div className="relative w-full bg-gray-100">
+            <div className="relative flex w-full items-center border border-gray-200 bg-gray-100">
+              <div
+                className="relative flex h-full items-center min-w-[50px] cursor-pointer gap-2 p-1"
+                onClick={() => setShowSelect(!showSelect)}
+              >
+                <Image
+                  src={countries.filter((i) => i.code === country)[0].image}
+                  alt={country}
+                  width={30}
+                  height={50}
+                />
+                <p>
+                  {countries.filter((i) => i.code === country)[0].dial_code}
+                </p>
+                {showSelect && (
+                  <div
+                    className={
+                      'absolute z-30 max-h-[25rem] overflow-y-scroll ' +
+                      (top ? 'bottom-10' : 'top-10')
+                    }
+                  >
+                    {countries.map((i, idx) => (
+                      <div
+                        onClick={() => setCountry(i.code)}
+                        key={idx}
+                        className="flex w-full min-w-[130px] items-center gap-2 bg-gray-200 px-4 py-2 text-xs text-gray-500"
+                      >
+                        <Image
+                          src={i.image}
+                          alt={country}
+                          width={30}
+                          height={50}
+                        />{' '}
+                        {i.dial_code}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <input
                 type="text"
                 name="phone"
-                className="w-full rounded border border-gray-200 bg-transparent px-4 py-2"
+                className="w-full rounded  bg-transparent px-4 py-2"
                 disabled={disableForm}
-                placeholder="+1"
+                placeholder="Phone Number"
               />
             </div>
             <p className="text-center text-[10px] text-gray-400">
@@ -237,12 +299,14 @@ function RegisterForm() {
             <button
               type="submit"
               disabled={disableForm}
-              className="bg-lime rounded-full py-2 text-sm font-bold"
+              className="rounded-full bg-lime py-2 text-sm font-bold"
             >
               {isLoading ? 'Creating Account...' : 'Create My Account'}
             </button>
-            {(isError || errors) ? (
-              <p className={'text-xs text-red-400'}>{error?.message || errors}</p>
+            {isError || errors ? (
+              <p className={'text-xs text-red-400'}>
+                {error?.message || errors}
+              </p>
             ) : null}
             <div className="flex justify-between">
               <div className="relative flex items-center gap-2 text-xs">

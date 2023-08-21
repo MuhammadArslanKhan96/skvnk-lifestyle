@@ -8,6 +8,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'gcdnb.pbrd.co',
       },
+      {
+        protocol: 'http',
+        hostname: 'purecatamphetamine.github.io',
+      },
     ],
   },
   experimental: {
