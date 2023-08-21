@@ -10,6 +10,7 @@ function RegisterForm() {
     pass: false,
     confirm_pass: false,
   })
+  const [errors, setErrors] = React.useState('')
   const [passwordErrors, setPasswordErrors] = React.useState({
     validation: null,
     minLength: null,
@@ -39,21 +40,21 @@ function RegisterForm() {
     } = formValues
 
     if (!email || !password || !phone) {
-      console.error('Fill the required fields!')
+      setErrors('Fill the required fields!')
       return
     }
 
     if (email !== confirm_email) {
-      console.error('Emails are not same!')
+      setErrors('Emails are not same!')
       return
     }
     if (password !== confirm_password) {
-      console.error('Passwords are not same!')
+      setErrors('Password does not match!')
       return
     }
 
     if (passwordErrors.validation || passwordErrors.minLength) {
-      console.error("Password doesn't meet the requirements!")
+      setErrors("Password doesn't meet the requirements!")
       return
     }
 
@@ -240,8 +241,8 @@ function RegisterForm() {
             >
               {isLoading ? 'Creating Account...' : 'Create My Account'}
             </button>
-            {isError ? (
-              <p className={'text-xs text-red-400'}>{error?.message}</p>
+            {(isError || errors) ? (
+              <p className={'text-xs text-red-400'}>{error?.message || errors}</p>
             ) : null}
             <div className="flex justify-between">
               <div className="relative flex items-center gap-2 text-xs">

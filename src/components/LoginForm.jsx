@@ -9,6 +9,7 @@ function LoginForm() {
   const [showPasswords, setShowPasswords] = React.useState({
     pass: false,
   })
+  const [errors, setErrors] = React.useState('')
 
   const router = useRouter()
 
@@ -27,7 +28,7 @@ function LoginForm() {
     const { email, password } = formValues
 
     if (!email || !password) {
-      console.error('Fill the required fields!')
+      setErrors('Fill the required fields!')
       return
     }
     await signInEmailPassword(email, password)
@@ -35,6 +36,10 @@ function LoginForm() {
   if (isSuccess) {
     router.push(router.query.redirect || '/')
     return null
+  }
+
+  function removeErrors() {
+    setErrors('')
   }
 
   const disableForm = isLoading || needsEmailVerification
@@ -56,6 +61,7 @@ function LoginForm() {
               <input
                 type="email"
                 disabled={disableForm}
+                onChange={removeErrors}
                 name="email"
                 className="w-full rounded border border-gray-200 bg-transparent px-4 py-2"
                 placeholder="Email"
@@ -68,6 +74,7 @@ function LoginForm() {
             </div>
             <div className="relative w-full bg-gray-100">
               <input
+                onChange={removeErrors}
                 type={showPasswords.pass ? 'text' : 'password'}
                 name="password"
                 disabled={disableForm}
@@ -90,12 +97,14 @@ function LoginForm() {
             <button
               type="submit"
               disabled={disableForm}
-              className="bg-lime rounded-full py-2 text-sm font-bold"
+              className="rounded-full bg-lime py-2 text-sm font-bold"
             >
               {isLoading ? 'Signing in...' : 'Sign in'}
             </button>
-            {isError ? (
-              <p className={'text-xs text-red-400'}>{error?.message}</p>
+            {isError || errors ? (
+              <p className={'text-xs text-red-400'}>
+                {error?.message || errors}
+              </p>
             ) : null}
             <div className="flex justify-between">
               <div className="relative flex items-center gap-2 text-xs">
