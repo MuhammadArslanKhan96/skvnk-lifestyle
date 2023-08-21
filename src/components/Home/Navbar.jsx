@@ -15,12 +15,7 @@ const Navbar = () => {
         <Image src={brandLogo} alt="" width={300} height={100} />
       </Link>
       <div className="flex flex-wrap justify-center items-center gap-4">
-        <Link
-          href={user ? '/pricing' : '/register'}
-          className="rounded-full uppercase bg-lime hover:bg-limehover px-4 py-2 font-roadrage font-bold"
-        >
-          Pricing
-        </Link>
+        
         {user ? (
           <div
             onClick={signOut}
