@@ -10,30 +10,39 @@ const Navbar = () => {
   const { signOut } = useSignOut()
 
   return (
-    <div className="flex items-center flex-col md:flex-row justify-between px-4">
+    <div className="flex flex-col items-center justify-between px-4 md:flex-row">
       <Link href="/">
         <Image src={brandLogo} alt="" width={300} height={100} />
       </Link>
-      <div className="flex flex-wrap justify-center items-center gap-4">
-        
+      <div className="flex flex-wrap items-center justify-center gap-4">
         {user ? (
-          <div
-            onClick={signOut}
-            className="cursor-pointer rounded-full bg-lime hover:bg-limehover px-4 py-2 font-roadrage font-bold"
-          >
-            Log Out
-          </div>
+          <>
+            {user?.metadata?.plan !== null && (
+              <Link
+                href="/dashboard"
+                className="rounded-full bg-lime px-4 py-2 font-roadrage font-bold hover:bg-limehover"
+              >
+                Dashboard
+              </Link>
+            )}
+            <div
+              onClick={signOut}
+              className="cursor-pointer rounded-full bg-lime px-4 py-2 font-roadrage font-bold hover:bg-limehover"
+            >
+              Log Out
+            </div>
+          </>
         ) : (
           <>
             <Link
               href="/login"
-              className="rounded-full bg-lime hover:bg-limehover px-4 py-2 font-roadrage font-bold"
+              className="rounded-full bg-lime px-4 py-2 font-roadrage font-bold hover:bg-limehover"
             >
               Log In
             </Link>
             <Link
               href="/register"
-              className="rounded-full bg-lime hover:bg-limehover px-4 py-2 font-roadrage font-bold"
+              className="rounded-full bg-lime px-4 py-2 font-roadrage font-bold hover:bg-limehover"
             >
               Join DI Club
             </Link>

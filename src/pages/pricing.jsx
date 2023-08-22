@@ -64,6 +64,7 @@ function Pricing() {
         },
       })
       toast.success('Purchase successfully!')
+      window.location.href = '/'
     } else {
       toast.error('Purchase Canceled!')
     }
