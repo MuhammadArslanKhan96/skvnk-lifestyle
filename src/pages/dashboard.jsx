@@ -1,61 +1,31 @@
-import { useMemo } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { parse } from 'rss-to-json'
-
-import { useAudioPlayer } from '@/components/AudioProvider'
+import { useLiveQuery } from 'next-sanity/preview'
 import { Container } from '@/components/Container'
 import { FormattedDate } from '@/components/FormattedDate'
+import { getEpisodes, episodesQuery } from '~/lib/sanity.queries'
 import { Layout } from '@/components/Layout'
 import { useUserContext } from '@/components/UserProvider'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-
-function PlayPauseIcon({ playing, ...props }) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 10 10" fill="none" {...props}>
-      {playing ? (
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M1.496 0a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5H2.68a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5H1.496Zm5.82 0a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5H8.5a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5H7.316Z"
-        />
-      ) : (
-        <path d="M8.25 4.567a.5.5 0 0 1 0 .866l-7.5 4.33A.5.5 0 0 1 0 9.33V.67A.5.5 0 0 1 .75.237l7.5 4.33Z" />
-      )}
-    </svg>
-  )
-}
+import { getClient } from '@/lib/sanity.client'
 
 function EpisodeEntry({ episode }) {
-  let date = new Date(episode.published)
-
-  let audioPlayerData = useMemo(
-    () => ({
-      title: episode.title,
-      audio: {
-        src: episode.audio.src,
-        type: episode.audio.type,
-      },
-      link: `/${episode.id}`,
-    }),
-    [episode]
-  )
-  let player = useAudioPlayer(audioPlayerData)
+  let date = new Date(episode._createdAt)
 
   return (
     <Layout>
       <article
-        aria-labelledby={`episode-${episode.id}-title`}
+        aria-labelledby={`episode-${episode._id}-title`}
         className="py-10 sm:py-12"
       >
         <Container>
           <div className="flex flex-col items-start">
             <h2
-              id={`episode-${episode.id}-title`}
+              id={`episode-${episode._id}-title`}
               className="mt-2 text-lg font-bold text-slate-900"
             >
-              <Link href={`/${episode.id}`}>{episode.title}</Link>
+              <Link href={`/${episode.slug.current}`}>{episode.title}</Link>
             </h2>
 
             <FormattedDate
@@ -68,7 +38,7 @@ function EpisodeEntry({ episode }) {
 
             <div className="mt-4 flex items-center gap-4">
               <Link
-                href={`/${episode.id}`}
+                href={`/${episode.slug.current}`}
                 className="flex items-center text-sm font-bold leading-6 text-altGreen hover:text-brandGreen active:text-brandGreen"
                 aria-label={`Show notes for episode ${episode.title}`}
               >
@@ -82,7 +52,8 @@ function EpisodeEntry({ episode }) {
   )
 }
 
-export default function Home({ episodes }) {
+export default function Home(props) {
+  const [episodes] = useLiveQuery(props.episodes, episodesQuery)
   const { user } = useUserContext()
   const router = useRouter()
   useEffect(() => {
@@ -90,7 +61,6 @@ export default function Home({ episodes }) {
       router.push('/pricing')
     }
   }, [])
-
   return (
     <>
       <Head>
@@ -111,7 +81,7 @@ export default function Home({ episodes }) {
         </Container>
         <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100">
           {episodes.map((episode) => (
-            <EpisodeEntry key={episode.id} episode={episode} />
+            <EpisodeEntry key={episode._id} episode={episode} />
           ))}
         </div>
       </div>
@@ -119,23 +89,15 @@ export default function Home({ episodes }) {
   )
 }
 
-export async function getStaticProps() {
-  let feed = await parse('https://their-side-feed.vercel.app/api/feed')
+export async function getStaticProps({ draftMode = false }) {
+  const client = getClient(draftMode ? { token: readToken } : undefined)
+  const episodes = await getEpisodes(client)
 
   return {
     props: {
-      episodes: feed.items.map(
-        ({ id, title, description, enclosures, published }) => ({
-          id,
-          title: `${id}: ${title}`,
-          published,
-          description,
-          audio: enclosures.map((enclosure) => ({
-            src: enclosure.url,
-            type: enclosure.type,
-          }))[0],
-        })
-      ),
+      draftMode,
+      token: draftMode ? readToken : '',
+      episodes,
     },
     revalidate: 10,
   }

@@ -12,6 +12,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'purecatamphetamine.github.io',
       },
+      { hostname: 'cdn.sanity.io' },
     ],
   },
   experimental: {
